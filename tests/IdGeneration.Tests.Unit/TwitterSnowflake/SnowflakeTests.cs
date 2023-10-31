@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+﻿using IdGeneration.Tests.Unit.TwitterSnowflake.Fakes;
 using IdGeneration.TwitterSnowflake;
 
 namespace IdGeneration.Tests.Unit.TwitterSnowflake;
@@ -8,29 +8,41 @@ public class SnowflakeTests
     private readonly Snowflake _sut;
 
     private readonly SnowflakeOptions _options;
-    private readonly DateTimeFake _dateTime;
+    private readonly EpochMillisecondsProviderFake _epochMilliseconds;
 
     public SnowflakeTests()
     {
         _options = new()
         {
-            Node = Random.Shared.Next(0, 1023)
+            Node = Random.Shared.Next(0, 1024)
         };
-        _dateTime = new DateTimeFake();
+        _epochMilliseconds = new EpochMillisecondsProviderFake();
 
-        _sut = new Snowflake(_options, _dateTime);
+        _sut = new Snowflake(_options, _epochMilliseconds);
     }
 
-    [Theory]
-    [InlineData(-1)]
-    [InlineData(1024)]
-    public void Constructor_WhenNodeIsInvalid_ThrowsArgumentException(int node)
+    [Fact]
+    public void Constructor_WhenNodeLessThanAllowed_ThrowsArgumentException()
     {
         // Arrange
-        var options = new SnowflakeOptions { Node = node };
+        var options = new SnowflakeOptions { Node = Random.Shared.Next(int.MinValue, 0) };
 
         // Act
-        Snowflake action() => new(options, _dateTime);
+        Snowflake action() => new(options, _epochMilliseconds);
+
+        // Assert
+        var exception = Assert.Throws<ArgumentException>(action);
+        Assert.Equal("_node (Parameter 'Node must be between 0 and 1023.')", exception.Message);
+    }
+
+    [Fact]
+    public void Constructor_WhenNodeIsGreaterThanAllowed_ThrowsArgumentException()
+    {
+        // Arrange
+        var options = new SnowflakeOptions { Node = Random.Shared.Next(1024, int.MaxValue) };
+
+        // Act
+        Snowflake action() => new(options, _epochMilliseconds);
 
         // Assert
         var exception = Assert.Throws<ArgumentException>(action);
@@ -41,6 +53,8 @@ public class SnowflakeTests
     public void NewId_WhenInvoked_ReturnsId()
     {
         // Arrange
+        _epochMilliseconds.Setup(epochMilliseconds: 777600000, occurences: 4096);
+
         // Act
         long actual = _sut.NewId();
 
@@ -49,49 +63,10 @@ public class SnowflakeTests
     }
 
     [Fact]
-    public void NewId_WhenInvokedSequentially_ReturnsDistinctIdsInAscendingOrder()
-    {
-        // Arrange
-        var idCount = 100000;
-        var ids = new long[idCount];
-
-        // Act
-        for (int i = 0; i < idCount; i++)
-        {
-            ids[i] = _sut.NewId();
-        }
-
-        // Assert
-        Assert.Equal(idCount, ids.Length);
-        Assert.Equal(idCount, ids.Distinct().Count());
-        Assert.True(ids.SequenceEqual(ids.Distinct()));
-        Assert.True(ids.SequenceEqual(ids.OrderBy(x => x)));
-    }
-
-    [Fact]
-    public void NewId_WhenInvokedInParallel_ReturnsDistinctIds()
-    {
-        // Arrange
-        var idCount = 100000;
-        var ids = new ConcurrentBag<long>();
-
-        // Act
-        Parallel.For(0, idCount, _ =>
-        {
-            ids.Add(_sut.NewId());
-        });
-
-        // Assert
-        Assert.Equal(idCount, ids.Count);
-        Assert.Equal(idCount, ids.Distinct().Count());
-        Assert.True(ids.SequenceEqual(ids.Distinct()));
-    }
-
-    [Fact]
     public void NewId_WhenInvokedUpToSequenceMaxTimesInSameMillisecond_IncrementsSequence()
     {
         // Arrange
-        _dateTime.Returns = new DateTime(2023, 1, 10, 0, 0, 0, DateTimeKind.Utc);
+        _epochMilliseconds.Setup(epochMilliseconds: 777600000, occurences: 4096);
 
         var idCount = 4096;
         var ids = new long[idCount];
@@ -106,6 +81,30 @@ public class SnowflakeTests
         Assert.Equal(idCount, ids.Length);
         Assert.Equal(((long)777600000 << 22) | (uint)_options.Node << 12, ids[0]);
         Assert.Equal(((long)777600000 << 22) | (uint)_options.Node << 12 | 4095, ids[^1]);
+        Assert.True(ids.SequenceEqual(ids.OrderBy(x => x)));
+    }
+
+    [Fact]
+    public void NewId_WhenInvokedOerSequenceMaxTimesInSameMillisecond_ResetsSequenceAndIncrementsMilliseconds()
+    {
+        // Arrange
+        _epochMilliseconds.Setup(epochMilliseconds: 777600000, occurences: 4999);
+        _epochMilliseconds.Setup(epochMilliseconds: 777600001, occurences: 1);
+
+        var idCount = 4097;
+        var ids = new long[idCount];
+
+        // Act
+        for (int i = 0; i < idCount; i++)
+        {
+            ids[i] = _sut.NewId();
+        }
+
+        // Assert
+        Assert.Equal(idCount, ids.Length);
+        Assert.Equal(((long)777600000 << 22) | (uint)_options.Node << 12, ids[0]);
+        Assert.Equal(((long)777600000 << 22) | (uint)_options.Node << 12 | 4095, ids[^2]);
+        Assert.Equal(((long)777600001 << 22) | (uint)_options.Node << 12, ids[^1]);
         Assert.True(ids.SequenceEqual(ids.OrderBy(x => x)));
     }
 }

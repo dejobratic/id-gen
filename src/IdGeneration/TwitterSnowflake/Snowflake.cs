@@ -9,14 +9,14 @@ public class Snowflake : IIdGenerator
     private long _lastEpochMillisecons = 0;
     private int _sequence = 0;
 
-    private readonly IDateTimeProvider _dateTime;
+    private readonly IEpochMillisecondsProvider _epochMilliseconds;
 
     public Snowflake(
         SnowflakeOptions options,
-        IDateTimeProvider dateTime)
+        IEpochMillisecondsProvider epochMilliseconds)
     {
         _node = options.Node;
-        _dateTime = dateTime;
+        _epochMilliseconds = epochMilliseconds;
 
         ThrowIfInvalid();
     }
@@ -38,10 +38,11 @@ public class Snowflake : IIdGenerator
 
     private long ResolveEpochMilliseconds()
     {
-        long epochMilliseconds = GetEpochMilliseconds();
-        if (epochMilliseconds == _lastEpochMillisecons)
+        var epochMilliseconds = _epochMilliseconds.GetCurrentSinceEpoch(_epochTimestamp);
+        if (IsOnLastEpochMilliseconds(epochMilliseconds))
         {
-            epochMilliseconds = IncrementMilliseconds(epochMilliseconds);
+            IncrementSequence();
+            epochMilliseconds = IncrementEpochMillisecondsOnSequenceOverflow(epochMilliseconds);
         }
         else
         {
@@ -51,20 +52,15 @@ public class Snowflake : IIdGenerator
         return epochMilliseconds;
     }
 
-    private long GetEpochMilliseconds()
-    {
-        TimeSpan span = _dateTime.Now - _epochTimestamp;
-        return (long)span.TotalMilliseconds;
-    }
+    private bool IsOnLastEpochMilliseconds(long epochMilliseconds)
+        => epochMilliseconds == _lastEpochMillisecons;
 
-    private long IncrementMilliseconds(long epochMilliseconds)
+    private long IncrementEpochMillisecondsOnSequenceOverflow(long epochMilliseconds)
     {
-        IncrementSequence();
-
         if (IsSequenceOverflow())
         {
             ResetSequence();
-            epochMilliseconds = WaitForNextEpochMillisecond(epochMilliseconds);
+            epochMilliseconds = _epochMilliseconds.GetNextSinceEpoch(_epochTimestamp, epochMilliseconds);
         }
 
         return epochMilliseconds;
@@ -78,14 +74,6 @@ public class Snowflake : IIdGenerator
 
     private void ResetSequence()
         => _sequence = 0;
-
-    private long WaitForNextEpochMillisecond(long epochMilliseconds)
-    {
-        while (epochMilliseconds == _lastEpochMillisecons)
-            epochMilliseconds = GetEpochMilliseconds();
-
-        return epochMilliseconds;
-    }
 
     private long CreateId()
     {

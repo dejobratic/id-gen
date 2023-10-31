@@ -1,4 +1,4 @@
-﻿namespace IdGeneration;
+﻿namespace IdGeneration.TwitterSnowflake;
 
 public class DateTimeProvider : IDateTimeProvider
 {

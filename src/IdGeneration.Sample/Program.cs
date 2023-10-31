@@ -4,5 +4,4 @@
 // TODO: Add support for multiple id generators: Snowflake, Nuid, Guid, HiLo, etc.
 // TODO: Consider sequence overflow strategy where applicable
 
-
 Console.WriteLine("Hello, World!");
