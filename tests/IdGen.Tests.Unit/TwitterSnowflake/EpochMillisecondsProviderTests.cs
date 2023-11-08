@@ -1,7 +1,7 @@
-﻿using IdGeneration.Tests.Unit.TwitterSnowflake.Fakes;
-using IdGeneration.TwitterSnowflake;
+﻿using IdGen.Tests.Unit.TwitterSnowflake.Fakes;
+using IdGen.TwitterSnowflake;
 
-namespace IdGeneration.Tests.Unit.TwitterSnowflake;
+namespace IdGen.Tests.Unit.TwitterSnowflake;
 
 public class EpochMillisecondsProviderTests
 {

@@ -1,4 +1,4 @@
-﻿namespace IdGeneration;
+﻿namespace IdGen;
 
 public interface IIdGenerator
 {

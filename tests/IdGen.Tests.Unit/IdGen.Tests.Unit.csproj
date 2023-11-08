@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\IdGeneration\IdGeneration.csproj" />
+    <ProjectReference Include="..\..\src\IdGen\IdGen.csproj" />
   </ItemGroup>
 
 </Project>

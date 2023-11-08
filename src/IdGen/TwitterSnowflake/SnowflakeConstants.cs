@@ -1,4 +1,4 @@
-﻿namespace IdGeneration.TwitterSnowflake;
+﻿namespace IdGen.TwitterSnowflake;
 
 internal static class SnowflakeConstants
 {

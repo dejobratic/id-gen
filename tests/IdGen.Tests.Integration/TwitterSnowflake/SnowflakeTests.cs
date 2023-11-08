@@ -1,7 +1,7 @@
-﻿using IdGeneration.TwitterSnowflake;
+﻿using IdGen.TwitterSnowflake;
 using System.Collections.Concurrent;
 
-namespace IdGeneration.Tests.Integration.TwitterSnowflake;
+namespace IdGen.Tests.Integration.TwitterSnowflake;
 
 public class SnowflakeTests
 {

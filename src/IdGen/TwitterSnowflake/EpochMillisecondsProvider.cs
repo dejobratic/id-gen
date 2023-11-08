@@ -1,4 +1,4 @@
-﻿namespace IdGeneration.TwitterSnowflake;
+﻿namespace IdGen.TwitterSnowflake;
 
 public class EpochMillisecondsProvider : IEpochMillisecondsProvider
 {

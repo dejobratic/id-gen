@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdGeneration", "src\IdGeneration\IdGeneration.csproj", "{476C50D1-76D2-4FA3-BB04-66C81A2EF2F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdGen", "src\IdGen\IdGen.csproj", "{476C50D1-76D2-4FA3-BB04-66C81A2EF2F5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdGeneration.Tests.Unit", "tests\IdGeneration.Tests.Unit\IdGeneration.Tests.Unit.csproj", "{300B32E2-4F15-4B5D-A379-0884F1181AA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdGen.Tests.Unit", "tests\IdGen.Tests.Unit\IdGen.Tests.Unit.csproj", "{300B32E2-4F15-4B5D-A379-0884F1181AA2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdGeneration.Sample", "src\IdGeneration.Sample\IdGeneration.Sample.csproj", "{AE5FB896-0765-4E0D-AD2B-2C776EBF5FF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdGen.Sample", "src\IdGen.Sample\IdGen.Sample.csproj", "{AE5FB896-0765-4E0D-AD2B-2C776EBF5FF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdGeneration.Tests.Integration", "tests\IdGeneration.Tests.Integration\IdGeneration.Tests.Integration.csproj", "{09A4744F-8BDF-4389-B877-B3E3CB5F109E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdGen.Tests.Integration", "tests\IdGen.Tests.Integration\IdGen.Tests.Integration.csproj", "{09A4744F-8BDF-4389-B877-B3E3CB5F109E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

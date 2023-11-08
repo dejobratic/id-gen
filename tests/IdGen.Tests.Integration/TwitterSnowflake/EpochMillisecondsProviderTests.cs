@@ -1,6 +1,6 @@
-﻿using IdGeneration.TwitterSnowflake;
+﻿using IdGen.TwitterSnowflake;
 
-namespace IdGeneration.Tests.Integration.TwitterSnowflake
+namespace IdGen.Tests.Integration.TwitterSnowflake
 {
     public class EpochMillisecondsProviderTests
     {

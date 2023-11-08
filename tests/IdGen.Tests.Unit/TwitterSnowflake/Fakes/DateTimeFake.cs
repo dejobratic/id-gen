@@ -1,6 +1,6 @@
-﻿using IdGeneration.TwitterSnowflake;
+﻿using IdGen.TwitterSnowflake;
 
-namespace IdGeneration.Tests.Unit.TwitterSnowflake.Fakes;
+namespace IdGen.Tests.Unit.TwitterSnowflake.Fakes;
 
 public class DateTimeFake : IDateTimeProvider
 {
