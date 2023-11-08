@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using IdGen.TwitterSnowflake;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace IdGen
+namespace IdGen;
+
+public static class DependencyInjection
 {
-    internal class DependencyInjection
+    public static IServiceCollection AddIdGen(this IServiceCollection services)
     {
+        services.AddTransient<IDateTimeProvider, DateTimeProvider>();
+        services.AddTransient<IEpochMillisecondsProvider, EpochMillisecondsProvider>();
+        services.AddSingleton(new SnowflakeOptions { Node = 0 });
+        services.AddSingleton<IIdGenerator, Snowflake>();
+
+        return services;
     }
 }

@@ -4,4 +4,21 @@
 // TODO: Add support for multiple id generators: Snowflake, Nuid, Guid, HiLo, etc.
 // TODO: Consider sequence overflow strategy where applicable
 
-Console.WriteLine("Hello, World!");
+
+using IdGen;
+using Microsoft.Extensions.DependencyInjection;
+
+// now resolve serviceProvider
+var serviceProvider = new ServiceCollection()
+    .AddIdGen()
+    .BuildServiceProvider();
+
+var idGenerator = serviceProvider.GetRequiredService<IIdGenerator>();
+
+for (var i = 0; i < 10; i++)
+{
+    var id = idGenerator.NewId();
+    Console.WriteLine($"Id: {id}");
+}
+
+Console.WriteLine("Done!");
