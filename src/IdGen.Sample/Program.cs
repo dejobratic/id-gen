@@ -8,7 +8,6 @@
 using IdGen;
 using Microsoft.Extensions.DependencyInjection;
 
-// now resolve serviceProvider
 var serviceProvider = new ServiceCollection()
     .AddIdGen()
     .BuildServiceProvider();
