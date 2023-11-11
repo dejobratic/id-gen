@@ -1,9 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Authors>dejobratic</Authors>
+		<Title>Simplified id generator, based on Twitter's Snowflake.</Title>
+		<Description>Simplified id generator, based on Twitter's Snowflake.</Description>
+		<RepositoryUrl>https://github.com/dejobratic/id-gen</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>

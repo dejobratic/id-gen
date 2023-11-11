@@ -1,11 +1,11 @@
-﻿using IdGen.Tests.Unit.TwitterSnowflake.Fakes;
-using IdGen.TwitterSnowflake;
+﻿using IdGen.Tests.Unit.Snowflake.Fakes;
+using IdGen.Snowflake;
 
-namespace IdGen.Tests.Unit.TwitterSnowflake;
+namespace IdGen.Tests.Unit.Snowflake;
 
 public class SnowflakeTests
 {
-    private readonly Snowflake _sut;
+    private readonly IdGen.Snowflake.Snowflake _sut;
 
     private readonly SnowflakeOptions _options;
     private readonly EpochMillisecondsProviderFake _epochMilliseconds;
@@ -18,7 +18,7 @@ public class SnowflakeTests
         };
         _epochMilliseconds = new EpochMillisecondsProviderFake();
 
-        _sut = new Snowflake(_options, _epochMilliseconds);
+        _sut = new IdGen.Snowflake.Snowflake(_options, _epochMilliseconds);
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class SnowflakeTests
         var options = new SnowflakeOptions { Node = Random.Shared.Next(int.MinValue, 0) };
 
         // Act
-        Snowflake action() => new(options, _epochMilliseconds);
+        IdGen.Snowflake.Snowflake action() => new(options, _epochMilliseconds);
 
         // Assert
         var exception = Assert.Throws<ArgumentException>(action);
@@ -42,7 +42,7 @@ public class SnowflakeTests
         var options = new SnowflakeOptions { Node = Random.Shared.Next(1024, int.MaxValue) };
 
         // Act
-        Snowflake action() => new(options, _epochMilliseconds);
+        IdGen.Snowflake.Snowflake action() => new(options, _epochMilliseconds);
 
         // Assert
         var exception = Assert.Throws<ArgumentException>(action);

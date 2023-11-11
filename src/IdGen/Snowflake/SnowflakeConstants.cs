@@ -1,10 +1,7 @@
-﻿namespace IdGen.TwitterSnowflake;
+﻿namespace IdGen.Snowflake;
 
 internal static class SnowflakeConstants
 {
-    public const int IdBitLength = 64;
-    public const int TimestampBitLength = 41;
-
     public const int NodeBitLength = 10;
     public static readonly int NodeMax = (int)Math.Pow(2, NodeBitLength) - 1;
 

@@ -1,11 +1,11 @@
-﻿using IdGen.TwitterSnowflake;
+﻿using IdGen.Snowflake;
 using System.Collections.Concurrent;
 
-namespace IdGen.Tests.Integration.TwitterSnowflake;
+namespace IdGen.Tests.Integration.Snowflake;
 
 public class SnowflakeTests
 {
-    private readonly Snowflake _sut;
+    private readonly IdGen.Snowflake.Snowflake _sut;
 
     public SnowflakeTests()
     {
@@ -16,7 +16,7 @@ public class SnowflakeTests
         var dateTime = new DateTimeProvider();
         var epochMilliseconds = new EpochMillisecondsProvider(dateTime);
 
-        _sut = new Snowflake(options, epochMilliseconds);
+        _sut = new IdGen.Snowflake.Snowflake(options, epochMilliseconds);
     }
 
     [Fact]

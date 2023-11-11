@@ -1,6 +1,6 @@
-﻿using IdGen.TwitterSnowflake;
+﻿using IdGen.Snowflake;
 
-namespace IdGen.Tests.Integration.TwitterSnowflake;
+namespace IdGen.Tests.Integration.Snowflake;
 
 public class DateTimeProviderTests
 {

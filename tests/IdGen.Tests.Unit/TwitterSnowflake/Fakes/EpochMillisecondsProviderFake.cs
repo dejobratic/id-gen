@@ -1,6 +1,6 @@
-﻿using IdGen.TwitterSnowflake;
+﻿using IdGen.Snowflake;
 
-namespace IdGen.Tests.Unit.TwitterSnowflake.Fakes;
+namespace IdGen.Tests.Unit.Snowflake.Fakes;
 
 public class EpochMillisecondsProviderFake : IEpochMillisecondsProvider
 {

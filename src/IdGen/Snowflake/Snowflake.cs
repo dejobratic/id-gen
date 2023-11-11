@@ -1,4 +1,4 @@
-﻿namespace IdGen.TwitterSnowflake;
+﻿namespace IdGen.Snowflake;
 
 public class Snowflake : IIdGenerator
 {

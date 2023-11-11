@@ -1,17 +1,33 @@
-﻿using IdGen.TwitterSnowflake;
+﻿using IdGen.Snowflake;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IdGen;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddIdGen(this IServiceCollection services)
+    public static IServiceCollection AddIdGen(this IServiceCollection services, Action<IdGenOptions>? configure = null)
     {
-        services.AddTransient<IDateTimeProvider, DateTimeProvider>();
-        services.AddTransient<IEpochMillisecondsProvider, EpochMillisecondsProvider>();
-        services.AddSingleton(new SnowflakeOptions { Node = 0 });
-        services.AddSingleton<IIdGenerator, Snowflake>();
+        var options = new IdGenOptions();
+        if (configure is not null) configure(options);
+
+        switch (options.Generator)
+        {
+            case Generator.Snowflake:
+                services.ConfigureSnowflake(options.SnowflakeOptions);
+                break;
+
+            default:
+                throw new Exception();
+        }
 
         return services;
+    }
+
+    private static void ConfigureSnowflake(this IServiceCollection services, SnowflakeOptions options)
+    {
+        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+        services.AddSingleton<IEpochMillisecondsProvider, EpochMillisecondsProvider>();
+        services.AddSingleton(options);
+        services.AddSingleton<IIdGenerator, Snowflake.Snowflake>();
     }
 }
