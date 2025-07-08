@@ -57,13 +57,11 @@ public class Snowflake : IIdGenerator
 
     private long IncrementEpochMillisecondsOnSequenceOverflow(long epochMilliseconds)
     {
-        if (IsSequenceOverflow())
-        {
-            ResetSequence();
-            epochMilliseconds = _epochMilliseconds.GetNextSinceEpoch(_epochTimestamp, epochMilliseconds);
-        }
-
-        return epochMilliseconds;
+        if (!IsSequenceOverflow()) 
+            return epochMilliseconds;
+        
+        ResetSequence();
+        return _epochMilliseconds.GetNextSinceEpoch(_epochTimestamp, epochMilliseconds);
     }
 
     private void IncrementSequence()
@@ -77,7 +75,7 @@ public class Snowflake : IIdGenerator
 
     private long CreateId()
     {
-        long id = _lastEpochMillisecons << SnowflakeConstants.NodeBitLength + SnowflakeConstants.SequenceBitLength;
+        var id = _lastEpochMillisecons << SnowflakeConstants.NodeBitLength + SnowflakeConstants.SequenceBitLength;
         id |= (long)_node << SnowflakeConstants.SequenceBitLength;
         id |= (long)_sequence;
 

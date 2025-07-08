@@ -8,7 +8,7 @@ public static class DependencyInjection
     public static IServiceCollection AddIdGen(this IServiceCollection services, Action<IdGenOptions>? configure = null)
     {
         var options = new IdGenOptions();
-        if (configure is not null) configure(options);
+        configure?.Invoke(options);
 
         switch (options.Generator)
         {
